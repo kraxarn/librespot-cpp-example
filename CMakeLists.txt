@@ -1,30 +1,20 @@
 cmake_minimum_required(VERSION 3.15)
 
-project(librespot-cxx)
-
+# Project name
+project(librespot-app)
+# C++ version
 set(CMAKE_CXX_STANDARD 17)
-if (POLICY CMP0048)
-	cmake_policy(SET CMP0048 NEW)
-endif ()
 
-option(ENABLE_LTO "Enable cross language linking time optimization" ON)
-if (ENABLE_LTO)
-	include(CheckIPOSupported)
-	check_ipo_supported(RESULT supported OUTPUT error)
-	if (supported)
-		message(STATUS "IPO / LTO enabled")
-		set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
-		add_link_options(-fuse-ld=lld)
-	else ()
-		message(STATUS "IPO / LTO not supported: <${error}>")
-	endif ()
-else ()
-	message(STATUS "IPO / LTO disabled")
-endif ()
-
-include_directories(${CMAKE_BINARY_DIR}/rs)
+# C++ headers and generated headers frp, Rust
+include_directories(${CMAKE_BINARY_DIR}/librespot-cpp)
 include_directories(src)
 
+# Major performance improvement, but doesn't work on all compilers
+set(ENABLE_LTO OFF)
+
+# Source file
+add_executable(librespot-app src/main.cpp)
+
+# librespot-cpp
 add_subdirectory(librespot-cpp)
-add_executable(librespot-cxx src/main.cpp)
-target_link_libraries(librespot-cxx librespot-cxx-rs)
+target_link_libraries(librespot-app librespot-cpp)

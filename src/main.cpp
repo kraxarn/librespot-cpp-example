@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "librespot_cxx.h"
+#include "librespot_cpp.h"
 
 int main(int argc, char **argv)
 {
