@@ -12,6 +12,11 @@ int main(int argc, char **argv)
 	auto cfg = rs::core::config::session_config();
 	auto cred = rs::core::authentication::with_password(argv[1], argv[2]);
 
+	std::cout << "available backends: ";
+	for (auto &backend : librespot::playback::audio_backend::backends())
+		std::cout << std::string(backend) << " ";
+	std::cout << std::endl;
+
 	std::cout << "connecting..." << std::endl;
 
 	try
